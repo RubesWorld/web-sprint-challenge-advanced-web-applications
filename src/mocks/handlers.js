@@ -87,35 +87,33 @@ let nextId = 12;
 
 function authenticator(req) {
   const { authorization } = req.headers.map;
-  return (authorization === token);
+  return authorization === token;
 }
 
-const urlBase = 'http://localhost:5000/api';
+const urlBase = "http://localhost:5000/api";
 
 export const handlers = [
   // Handles a POST /login request
   rest.post(`${urlBase}/login`, (req, res, ctx) => {
     const { username, password } = req.body;
-    if (username === "Lambda School" && password === "i<3Lambd4") {
+    if (username === "LambdaSchool" && password === "Lambda") {
       return res(
-          ctx.status(200),
-          ctx.json({
-              payload: token,
-          }))
+        ctx.status(200),
+        ctx.json({
+          payload: token,
+        })
+      );
     } else {
-        return res(
-            ctx.status(403),
-            ctx.json({ error: "Username or Password incorrect. Please see Readme" })
-        );
+      return res(
+        ctx.status(403),
+        ctx.json({ error: "Username or Password incorrect. Please see Readme" })
+      );
     }
   }),
   // Handles a GET /user request
   rest.get(`${urlBase}/colors`, (req, res, ctx) => {
     if (authenticator(req)) {
-      return res(
-        ctx.status(200),
-        ctx.json(colors)
-      );
+      return res(ctx.status(200), ctx.json(colors));
     } else {
       res.status(403).json({ error: "User must be logged in to do that." });
     }
