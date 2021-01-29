@@ -11,21 +11,21 @@ import ColorList from "./ColorList";
 const BubblePage = () => {
   const [colorList, setColorList] = useState([]);
 
+  useEffect(() => {
+    fetchColor();
+  }, []);
+
   const fetchColor = () => {
     axiosWithAuth()
       .get("http://localhost:5000/api/colors")
       .then((res) => {
-        console.log("res", res);
+        console.log("response from fetch", res);
         setColorList(res.data);
       })
       .catch((err) => {
         console.log("err", err);
       });
   };
-
-  useEffect(() => {
-    fetchColor();
-  }, [colorList]);
 
   return (
     <>

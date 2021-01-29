@@ -33,11 +33,12 @@ const Login = (props) => {
       .post("http://localhost:5000/api/login", form)
       .then((res) => {
         console.log(res.data);
-        props.history.push("/BubblesPage");
+        localStorage.setItem("token", res.data.payload);
+        props.history.push("/BubblePage");
         //!Don't really understand the props.history bit. Need to ask
       })
       .catch((err) => {
-        console.log(err);
+        console.log("Login Error", err);
       });
   };
   // make a post request to retrieve a token from the api

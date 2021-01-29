@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import EditMenu from "./EditMenu";
+import axiosWithAuth from "../helpers/axiosWithAuth";
+
+//react-router-dom
+import { useParams, useHistory } from "react-router-dom";
 
 const initialColor = {
   color: "",
@@ -10,6 +14,7 @@ const initialColor = {
 const ColorList = ({ colors, updateColors }) => {
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
+  const { id } = useParams;
 
   const editColor = (color) => {
     setEditing(true);
@@ -18,9 +23,43 @@ const ColorList = ({ colors, updateColors }) => {
 
   const saveEdit = (e) => {
     e.preventDefault();
+    axiosWithAuth()
+      .put(`http://localhost:5000/api/colors/${colorToEdit.id}`, colorToEdit)
+      .then((res) => {
+        updateColors(
+          colors.map((color) => {
+            if (res.data.id === color.id) {
+              return res.data;
+            } else {
+              return color;
+            }
+          })
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
-  const deleteColor = (color) => {};
+  const deleteColor = (color) => {
+    axiosWithAuth()
+      .delete(`http://localhost:5000/api/colors/${color.id}`)
+      .then((res) => {
+        console.log("DELETED", res);
+        updateColors(
+          colors.filter((selColor) => {
+            if (color.id === selColor.id) {
+              return false;
+            } else {
+              return true;
+            }
+          })
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <div className="colors-wrap">

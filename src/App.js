@@ -10,8 +10,8 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <PrivateRoute exact path="/BubblesPage" component={BubblePage} />
-        <Route exact path="/" component={Login} />
+        <PrivateRoute exact path="/BubblePage" component={BubblePage} />
+        <Route exact path="/login" component={Login} />
       </div>
     </Router>
   );
